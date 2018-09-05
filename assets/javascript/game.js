@@ -3,13 +3,24 @@ let losses = 0;
 let alphabet = "abcdefghijklmnopqrstuvwxyz";
 let guesses = [];
 let max = 9
-setValues();
-function setValues(){
-    document.getElementById("1").appendChild(document.createTextNode(wins))
-    document.getElementById("2").appendChild(document.createTextNode(losses))
-    document.getElementById("3").appendChild(document.createTextNode(max))
-    document.getElementById("4").appendChild(document.createTextNode(guesses))
-}
+
+let item1 = document.createTextNode(wins);
+let item2 = document.createTextNode(losses);
+let item3 = document.createTextNode(max);
+let item4 = document.createTextNode(guesses);
+document.getElementById("1").appendChild(item1)
+document.getElementById("2").appendChild(item2)
+document.getElementById("3").appendChild(item3)
+document.getElementById("4").appendChild(item4)
+
+
+
+
+
+
+
+
+
 
 
 
@@ -19,7 +30,10 @@ class Answer {
     }
     
     set() {
+        this.replace();
         this.letter = alphabet[Math.floor(Math.random() * alphabet.length)]
+        max = 9;
+        guesses = []
         
         
     }
@@ -29,6 +43,14 @@ class Answer {
 
     }
 
+    replace()
+    {
+        document.getElementById("1").firstChild.nodeValue = `Wins: ${wins}`;
+        document.getElementById("2").firstChild.nodeValue = `Losses: ${losses}`;
+        document.getElementById("3").firstChild.nodeValue = `Guesses Left: ${max}`;
+        document.getElementById("4").firstChild.nodeValue = `Guesses so Far: ${guesses}`;
+
+    }
 
 }
 
@@ -40,9 +62,7 @@ let answer = new Answer();
     if (alphabet.includes(event.key) && event.key == answer.get())
     {
         wins++
-        max = 9;
-        guesses = [];
-        setValues();
+        answer.replace()
         alert("You are correct!");
         answer.set();
         
@@ -51,13 +71,19 @@ let answer = new Answer();
     }else
     if (event.key != answer.get() && max > 1)
     {
-        guesses.pop(event.key);
+        guesses.push(event.key);
         max--;
-        setValues();
+        answer.replace();
+        
     }else if(max == 1)
     {
+        max--
         losses++;
-        setValues();
+        alert("New Game!");
+        answer.set();
+        answer.replace();
+        
+        
     }
         
         
